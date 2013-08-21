@@ -146,21 +146,29 @@ AstrogeneratorGenerator.prototype.askFor = function askFor() {
   }.bind(this));
 };
 
-AstrogeneratorGenerator.prototype.files = function files() {
+AstrogeneratorGenerator.prototype.addToRoutes = function addToRoutes() {
   this.controllerName = _s.capitalize(_s.camelize(this.routeName));
+  var f = this.readFileAsString('app/scripts/app.js');
+  // TODO Dirty, but what would be a better way?
+  f = f.replace('.otherwise(', ".when('/"+this.routeName+"',{\ntemplateUrl: 'views/"+this.routeName+".html',\ncontroller:'"+this.controllerName+"Ctrl'"+(this.includeHeader ? ",\ntitle:'" + this.routeTitle + "'" : '')+'\n}).otherwise(');
+  this.write('app/scripts/app.js', f);
+}
+
+AstrogeneratorGenerator.prototype.files = function files() {
+  console.log(this.controllerName);
   this.template('_controller.js', 'app/scripts/controllers/' + this.routeName + '.js' );
   this.jsFiles.push('scripts/controllers/' + this.routeName + '.js');
   if(this.useService) {
     this.mkdir('app/scripts/services/');
-    this.mkdir('app/modules/astro/');
+    this.mkdir('app/scripts/modules/astro/');
     this.needsCache = this._.find(this.serviceMethods, function(meth) {
       return meth.cache;
     });
     console.log(this.needsCache);
     this.template('_service.js', 'app/scripts/services/' + this.controllerName + 'Service.js' );
-    this.template('_astroService.js', 'app/scripts/modules/astro' + this.controllerName + '.js' );
+    this.template('_astroService.js', 'app/scripts/modules/astro/' + this.controllerName + '.js' );
     this.jsFiles.push('scripts/services/' + this.controllerName + 'Service.js');
-    this.jsFiles.push('scripts/modules/astro' + this.controllerName + '.js');
+    this.jsFiles.push('scripts/modules/astro/' + this.controllerName + '.js');
   }
 };
 
