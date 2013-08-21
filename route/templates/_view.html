@@ -1,8 +1,8 @@
 <div id="<%= divId %>">
 	<% if(subnavItems.length>0) { %><nav class="navigation-container">
 		<ul class="<%= subnavClass %>">
-	<% _.each(subnavItems, function(item, k){ %><li ng-class="{active: activeSubNav == <%= k %>}" ng-click="changeSubNav($index)"></li>
-	<% }); %>
+			<% _.each(subnavItems, function(item, k){ %><li ng-class="{active: activeSubNav == <%= k %>}" ng-click="changeSubNav($index)"><%= item %></li>
+			<% }); %>
 		</ul>
 	</nav><% } %>
 	<div class="content-holder <% if(subnavItems.length>0){ print('nav-on') } %> <% if(includeFooter){ print('footer-on') } %>">
@@ -11,7 +11,8 @@
 		<ul class="<%= footerClass %>">
 			<% _.each( footerButtons, function(item, k) { %><li>
 				<div id="<%= item %>" ng-click="<%= item %>Click()" ng-class="{on: false}"></div>
-			</li><% }); %>
+			</li>
+			<% }); %>
 		</ul>
 	</div><% } %>
 </div>

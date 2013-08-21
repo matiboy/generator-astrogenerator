@@ -9,7 +9,8 @@ angular.module('<%= appName %>')
 		$scope.changeSubNav = function(i) {
 			$scope.activeSubNav = i;
 		};<% } %>
-		<% if(includeFooter) { _.each(footerButtons, function(item){
-			print('$scope.' + item + 'Click = function() {\n\n}');
-		}); } %>
+		<% if(includeFooter) { _.each(footerButtons, function(item){ %>
+		$scope.<%= item %>Click = function() {
+
+		};<%}); } %>
 	});
