@@ -3,5 +3,6 @@ var footers = module.exports = [
 	'reminder',
 	'favorite',
 	'like',
-	'remoteRecord'
+	'record',
+	'share'
 ];

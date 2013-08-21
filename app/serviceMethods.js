@@ -13,5 +13,15 @@ var serviceMethods = module.exports = [
 		],
 		method: 'post',
 		cacheKey: '(function(id){ return id; })(id)'
+	},
+	{
+		name: 'update',
+		value: 'update',
+		parameters: [
+			'id',
+			'dsaasd'
+		],
+		method: 'jsonp',
+		cacheKey: '(function(id){ return id; })(id)'
 	}
 ];

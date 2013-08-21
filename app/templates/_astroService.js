@@ -7,7 +7,7 @@ angular.module('astro<%= controllerName %>')
 		};
 		this.$get = function(astroApiUrls, $http) {
 			return {<% _.each( serviceMethods, function( method ) { %>
-				<%= method.name %>: function(<% _.each(method.parameters, function(parameter) { %><%= parameter %><% }) %>) {
+				<%= method.name %>: function(<% print(method.parameters.join(', ')); %>) {
 					return $http.<%= method.method %>(Urls.<%= method.name.toUpperCase() %>({
 						// Put url template variables here
 					})<% if(method.method == 'post') { %>, {
