@@ -1,4 +1,7 @@
-exports.footers = [
+var footers = module.exports = [
+	'',
 	'reminder',
-	'favorite'
+	'favorite',
+	'like',
+	'remoteRecord'
 ];
