@@ -1,6 +1,6 @@
 # generator-astrogenerator [![Build Status](https://secure.travis-ci.org/matiboy/generator-astrogenerator.png?branch=master)](https://travis-ci.org/matiboy/generator-astrogenerator)
 
-A generator for [Yeoman](http://yeoman.io).
+A generator for [Astro Angular based applications](http://astro.com.my).
 
 
 ## Getting Started

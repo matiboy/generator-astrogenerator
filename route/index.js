@@ -251,6 +251,7 @@ AstrogeneratorGenerator.prototype.addToRoutes = function addToRoutes() {
   }
 
   this.template('_view.html', 'app/views/' +this.routeName+".html" );
+  this.template('_route.sass', 'app/styles/_' + this.divId+".sass" );
 };
 
 AstrogeneratorGenerator.prototype.addToIndex = function addToIndex() {
