@@ -1,0 +1,4 @@
+exports.footers = [
+	'reminder',
+	'favorite'
+];
