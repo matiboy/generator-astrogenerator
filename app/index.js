@@ -111,7 +111,7 @@ AstrogeneratorGenerator.prototype.findAppName = function findAppName() {
       name: 'routeTitle',
       message: 'Header title',
       default: function(){
-        return _s.capitalize(this.routeName);
+        return this._.str.capitalize(this.routeName);
       }.bind(this),
       when: function(answers){ // Only ask this if header selected
         return answers.includeHeader;
@@ -212,7 +212,7 @@ AstrogeneratorGenerator.prototype.askForFooter = function askForFooter() {
 };
 
 AstrogeneratorGenerator.prototype.addToRoutes = function addToRoutes() {
-  this.controllerName = _s.capitalize(_s.camelize(this.routeName));
+  this.controllerName = this._.str.capitalize(this._.str.camelize(this.routeName));
   var f = this.readFileAsString('app/scripts/app.js');
   // TODO Dirty, but what would be a better way?
   var newRouteInApp = ".when('/";
@@ -239,7 +239,7 @@ AstrogeneratorGenerator.prototype.addToRoutes = function addToRoutes() {
         this.jsFiles.push('scripts/services/' + this.controllerName + 'Service.js');
         this.jsFiles.push('scripts/modules/astro/' + this.controllerName + '.js');
       }
-      this.divId = _s.dasherize(this.routeName);
+      this.divId = this._.str.dasherize(this.routeName);
 
   // Prepare nav stuff
   if(this.subnavItems.length > 0) {
