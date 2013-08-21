@@ -1,7 +1,8 @@
 angular.module('astro<%= controllerName %>')
 	.provider('astro<%= controllerName %>Service', function() {
+		// Get correct Url templates
 		var Urls = {
-			<% _.each( serviceMethods, function( method ) { %><% print(method.name.toUpperCase()) %>: _.template(''),
+			<% _.each( serviceMethods, function( method ) { %><% print(method.name.toUpperCase()) %>: _.template('<% if(method.method == "jsonp") { print(&format=jsonp&callback=JSON_CALLBACK) } %>'),
 			<% }); %>
 		};
 		this.$get = function(astroApiUrls, $http) {
