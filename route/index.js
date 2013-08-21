@@ -2,7 +2,6 @@
 var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
-var _s = require('underscore.string');
 var AstrogeneratorGenerator = module.exports = function AstrogeneratorGenerator(args, options, config) {
   this.jsFiles = [];
   yeoman.generators.Base.apply(this, arguments);
@@ -117,71 +116,71 @@ AstrogeneratorGenerator.prototype.findAppName = function findAppName() {
         return answers.includeHeader;
       }
     }
-  ];
-  this.prompt(prompts, function (answers) {
-    this.includeHeader = answers.includeHeader;
-    this.includeHeaderMenu = answers.includeHeaderMenu;
-    this.routeTitle = answers.routeTitle;
-    cb();
-  }.bind(this));
-};
+    ];
+    this.prompt(prompts, function (answers) {
+      this.includeHeader = answers.includeHeader;
+      this.includeHeaderMenu = answers.includeHeaderMenu;
+      this.routeTitle = answers.routeTitle;
+      cb();
+    }.bind(this));
+  };
 
-AstrogeneratorGenerator.prototype.askForSubnav = function askForSubnav() {
-  var cb = this.async();
-  var subnavItems = [];
-  this.subnavItems = [];
-  function subnavPrompt() {
-    this.prompt([
-    {
-      type: 'input',
-      name: 'title',
-      message: 'Add sub navigation item (<enter> to skip)'
+  AstrogeneratorGenerator.prototype.askForSubnav = function askForSubnav() {
+    var cb = this.async();
+    var subnavItems = [];
+    this.subnavItems = [];
+    function subnavPrompt() {
+      this.prompt([
+      {
+        type: 'input',
+        name: 'title',
+        message: 'Add sub navigation item (<enter> to skip)'
+      }
+      ], function(answers){
+        if(answers.title != '') {
+          subnavItems.push(answers.title);
+          subnavPrompt.bind(this)();
+        } else {
+          this.subnavItems = subnavItems;
+          this.log.ok('Added ' + subnavItems.length + ' sub navigation items');
+          cb();
+        }
+      }.bind(this))
     }
-    ], function(answers){
-      if(answers.title != '') {
-        subnavItems.push(answers.title);
+
+    var prompts = [
+    {
+      type: 'confirm',
+      name: 'includeSubnav',
+      message: 'Include sub navigation?',
+      default: false
+    }
+    ];
+    this.prompt(prompts, function (answers) {
+      if(answers.includeSubnav) {
         subnavPrompt.bind(this)();
       } else {
-        this.subnavItems = subnavItems;
-        this.log.ok('Added ' + subnavItems.length + ' sub navigation items');
         cb();
       }
-    }.bind(this))
-  }
+    }.bind(this));
+  };
 
-  var prompts = [
-  {
-    type: 'confirm',
-    name: 'includeSubnav',
-    message: 'Include sub navigation?',
-    default: false
-  }
-  ];
-  this.prompt(prompts, function (answers) {
-    if(answers.includeSubnav) {
-      subnavPrompt.bind(this)();
-    } else {
-      cb();
-    }
-  }.bind(this));
-};
-
-AstrogeneratorGenerator.prototype.askForFooter = function askForFooter() {
-  var cb = this.async();
-  var footerChoices = require('./footers');
-  var selectedButtons = [];
-  function footerPrompt() {
-    this.prompt([{
-      type: 'list',
-      name: 'footerButton',
-      message: 'Add footer button (select empty string to stop)',
-      choices: footerChoices
-    }], function(answers) {
-      var button = answers.footerButton;
-      if(button != '') {
-        selectedButtons.push(button);
-        footerChoices = this._.without(footerChoices, button);
-        if(footerChoices.length > 1) {
+  AstrogeneratorGenerator.prototype.askForFooter = function askForFooter() {
+    var cb = this.async();
+    var footerChoices = require('./footers');
+    var selectedButtons = [];
+    function footerPrompt() {
+      this.prompt([{
+        type: 'list',
+        name: 'footerButton',
+        message: 'Add footer button (select empty string to stop)',
+        choices: footerChoices
+      }], function(answers) {
+        var button = answers.footerButton;
+        if(button != '') {
+          selectedButtons.push(button);
+          footerChoices = this._.without(footerChoices, button);
+          if(footerChoices.length > 1) {
           footerPrompt.bind(this)(); // Potential risk of stack overflow?
         } else {
           this.footerButtons = selectedButtons;
@@ -192,28 +191,28 @@ AstrogeneratorGenerator.prototype.askForFooter = function askForFooter() {
         cb();
       }
     }.bind(this));
-  };
-  var prompts = [
-  {
-    type: 'confirm',
-    name: 'includeFooter',
-    message: 'Include footer?',
-    default: true
-  }
-  ];
-  this.prompt(prompts, function (answers) {
-    this.includeFooter = answers.includeFooter;
-    if(this.includeFooter) {
-      footerPrompt.bind(this)();
-    } else {
-      cb();
+    };
+    var prompts = [
+    {
+      type: 'confirm',
+      name: 'includeFooter',
+      message: 'Include footer?',
+      default: true
     }
-  }.bind(this));
-};
+    ];
+    this.prompt(prompts, function (answers) {
+      this.includeFooter = answers.includeFooter;
+      if(this.includeFooter) {
+        footerPrompt.bind(this)();
+      } else {
+        cb();
+      }
+    }.bind(this));
+  };
 
-AstrogeneratorGenerator.prototype.addToRoutes = function addToRoutes() {
-  this.controllerName = this._.str.capitalize(this._.str.camelize(this.routeName));
-  var f = this.readFileAsString('app/scripts/app.js');
+  AstrogeneratorGenerator.prototype.addToRoutes = function addToRoutes() {
+    this.controllerName = this._.str.capitalize(this._.str.camelize(this.routeName));
+    var f = this.readFileAsString('app/scripts/app.js');
   // TODO Dirty, but what would be a better way?
   var newRouteInApp = ".when('/";
     newRouteInApp += this.routeName+"',{\ntemplateUrl: 'views/"+this.routeName+".html'";
