@@ -2,13 +2,13 @@
 var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
-var Paths = require('./paths');
+var Paths = require('../paths');
 var AstrogeneratorGenerator = module.exports = function AstrogeneratorGenerator(args, options, config) {
   this.jsFiles = [];
   yeoman.generators.Base.apply(this, arguments);
 
   this.on('end', function () {
-    // this.installDependencies({ skipInstall: options['skip-install'] });
+    this.installDependencies({ skipInstall: options['skip-install'] });
   });
 
   this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
@@ -319,6 +319,7 @@ AstrogeneratorGenerator.prototype.addToMenu = function addToMenu() {
       $(lis[this.menuPosition-2]).after(newLi);
     }
     this.write(Paths.MENU, $.html());
+    this.log.ok('Menu item added');
   }
   
 }
