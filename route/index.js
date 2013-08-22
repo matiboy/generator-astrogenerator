@@ -2,6 +2,7 @@
 var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
+var Paths = require('./paths');
 var AstrogeneratorGenerator = module.exports = function AstrogeneratorGenerator(args, options, config) {
   this.jsFiles = [];
   yeoman.generators.Base.apply(this, arguments);
@@ -259,10 +260,65 @@ AstrogeneratorGenerator.prototype.addToMainSass = function addToMainSass() {
 }
 
 AstrogeneratorGenerator.prototype.addToIndex = function addToIndex() {
+  
   // Add all the files we created to the index
   var indexFile = this.readFileAsString('app/index.html');
   // JS
   var out = this.appendScripts(indexFile, 'scripts/scripts.js', this.jsFiles);
   // CSS (not created yet, Grunt will take care of that)
   this.write('app/index.html', out);
+}
+AstrogeneratorGenerator.prototype.askAboutMenu = function askAboutMenu() {
+  var cheerio = require('cheerio');
+  var menu = this.readFileAsString('app/views/partials/_menu.html');
+  var $ = cheerio.load(menu);
+  var lis = $('li');
+  this.routeTitle = 'ddfdsdf';
+  var cb = this.async();
+  this.prompt([{
+    type: 'input',
+    name: 'menuPosition',
+    message: 'Menu position (0 to skip. 1 is the first position, ' +( lis.length + 1 )+ ' is the highest)',
+    default: 0,
+    validate: function(position) {
+      if(position>=0 && position<=lis.length+1) {
+        return true;
+      } else {
+        return 'Please enter a position between 0 and ' + (lis.length+1);
+      }
+    }
+  },
+  {
+    type: 'input',
+    name: 'menuTitle',
+    message: 'Menu title:',
+    default: this.routeTitle,
+    when: function(answers) {
+      return answers.menuPosition>0;
+    }
+  }
+  ], function(answers) {
+    this.menuTitle = answers.menuTitle;
+    this.menuPosition = answers.menuPosition;
+    cb();
+  }.bind(this));
+}
+
+AstrogeneratorGenerator.prototype.addToMenu = function addToMenu() {
+  if(this.menuPosition == 0) {
+    this.log.skip('Not adding to menu');
+  } else {
+    var cheerio = require('cheerio');
+    var menu = this.readFileAsString(Paths.MENU);
+    var $ = cheerio.load(menu);
+    var lis = $('li');
+    var newLi = '<li ng-click="menuClick()">' + this.menuTitle + '</li>';
+    if(this.menuPosition == 1) {
+      $(lis[0]).before(newLi);
+    } else {
+      $(lis[this.menuPosition-2]).after(newLi);
+    }
+    this.write(Paths.MENU, $.html());
+  }
+  
 }
