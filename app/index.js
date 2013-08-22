@@ -90,7 +90,22 @@ AstrogeneratorGenerator.prototype.addDependencies = function addDependencies() {
 }
 
 AstrogeneratorGenerator.prototype.addLibraries = function addLibraries() {
-  var bower = JSON.parse( this.readFileAsString(Paths.BOWER_JSON ) );
+  var bower;
+  try {
+    bower = JSON.parse( this.readFileAsString(Paths.BOWER_JSON ) );
+  } catch(e) {
+    // TODO check the exception
+    this.log.skip('Could not find bower.json, checking whether you are using component.json');
+    try{
+      bower = JSON.parse( this.readFileAsString(Paths.COMPONENT_JSON ) );
+    } catch(e){
+      this.log.skip('Unable to find component.json. Will create a new bower.json file');
+      bower = {
+        dependencies: {}
+      };
+    }
+    
+  }
 
   var libraries = this._.keys(bower.dependencies);
 
