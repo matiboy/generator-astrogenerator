@@ -86,8 +86,29 @@ AstrogeneratorGenerator.prototype.addDependencies = function addDependencies() {
       this.log.ok('Adding ' + item + ' to list of dependencies');
     }
   }.bind(this));
-  console.log(this.appDependenciesAsString, JSON.stringify(dependencies));
   this.write(Paths.APP_JS, fullAppjs.replace(this.appDependenciesAsString, JSON.stringify(dependencies)));
+}
+
+AstrogeneratorGenerator.prototype.addLibraries = function addLibraries() {
+  var bower = JSON.parse( this.readFileAsString(Paths.BOWER_JSON ) );
+
+  var libraries = this._.keys(bower.dependencies);
+
+  var commonLibraries = require('../commonLibraries');
+
+  this._.each(this.libraries, function(item){
+    if(this._.contains(libraries, item)) {
+      this.log.skip(item + ' is already a dependency');
+    } else {
+      var lib = this._.find(commonLibraries, function(x){
+        return x.value == item;
+      });
+      bower.dependencies[item] = lib.version;
+      this.log.ok('Adding ' + lib.name + ' to list of dependencies');
+      this.jsFiles.push(Paths.BOWER_COMPONENTS + item + '/' + item + '.js');
+    }
+  }.bind(this));
+  this.write(Paths.BOWER_JSON, JSON.stringify(bower));
 }
 
 AstrogeneratorGenerator.prototype.addJSFilesToIndex = function addJSFilesToIndex() {
