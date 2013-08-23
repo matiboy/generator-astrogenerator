@@ -262,11 +262,11 @@ AstrogeneratorGenerator.prototype.addToMainSass = function addToMainSass() {
 AstrogeneratorGenerator.prototype.addToIndex = function addToIndex() {
   
   // Add all the files we created to the index
-  var indexFile = this.readFileAsString('app/index.html');
+  var indexFile = this.readFileAsString(Paths.INDEX_HTML);
   // JS
   var out = this.appendScripts(indexFile, 'scripts/scripts.js', this.jsFiles);
   // CSS (not created yet, Grunt will take care of that)
-  this.write('app/index.html', out);
+  this.write(Paths.INDEX_HTML, out);
 }
 AstrogeneratorGenerator.prototype.askAboutMenu = function askAboutMenu() {
   var cheerio = require('cheerio');

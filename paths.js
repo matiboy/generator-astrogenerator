@@ -8,5 +8,6 @@ var Paths = module.exports = {
 	INDEX_HTML: 'app/index.html',
 	BOWER_COMPONENTS: 'app/bower_components',
 	PARTIALS: 'app/views/partials',
-	CONTROLLERS: 'app/scripts/controllers'
+	CONTROLLERS: 'app/scripts/controllers',
+	SERVICES: 'app/scripts/services'
 };
