@@ -8,7 +8,8 @@ angular.module('<%= appName %>').controller('ModalCtrl', function ($scope, $root
 	$scope.closeEverything = function(){
 		$rootScope.$broadcast(ModalService.Events.CLOSE_MODAL);
 	}
-	$scope.$on(ModalService.Events.OPEN_MODAL, function() {
+	$scope.$on(ModalService.Events.OPEN_MODAL, function(e, name) {
 		$scope.showModals = true;
+		$scope.shownModal = name;
 	});
 });
