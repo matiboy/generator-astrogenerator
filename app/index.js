@@ -135,3 +135,9 @@ AstrogeneratorGenerator.prototype.addJSFilesToIndex = function addJSFilesToIndex
   // CSS (not created yet, Grunt will take care of that)
   this.write(Paths.INDEX_HTML, out);
 }
+
+AstrogeneratorGenerator.prototype.createFoldersAndFiles = function createFoldersAndFiles() {
+  this.mkdir(Paths.PARTIALS);
+  this.copy('templates/_menu.html', Paths.PARTIALS + '/_menu.html');
+  this.copy('templates/_modals.html', Paths.PARTIALS + '/_modals.html');
+}

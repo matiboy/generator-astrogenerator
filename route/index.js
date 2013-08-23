@@ -20,15 +20,15 @@ AstrogeneratorGenerator.prototype.findAppName = function findAppName() {
   // have Yeoman greet the user.
   console.log(this.yeoman);
 
-  var f = this.readFileAsString('./app/scripts/app.js');
+  var f = this.readFileAsString(Paths.APP_JS);
   var reg = /angular.module\(\s*'([a-zA-Z]*)/;
-    try {
-      this.appName = reg.exec(f)[1];
-      this.log.ok('Found app name: ' + this.appName);
-    } catch(e) {
-      this.log.skip('Could not read App name (will ask later)')
-    }
-  };
+  try {
+    this.appName = reg.exec(f)[1];
+    this.log.ok('Found app name: ' + this.appName);
+  } catch(e) {
+    this.log.skip('Could not read App name (will ask later)')
+  }
+};
 
 AstrogeneratorGenerator.prototype.askForGeneralDetails = function askForGeneralDetails() {
   var cb = this.async();
